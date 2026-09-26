@@ -1,0 +1,10 @@
+{
+  "name": "com.crowfox.toolkit",
+  "version": "1.0.0",
+  "displayName": "Crowfox Toolkit",
+  "description": "Reusable Unity utilities and components by CrowfoxCreatives.",
+  "unity": "6000.4",
+  "author": {
+    "name": "CrowfoxCreatives"
+  }
+}

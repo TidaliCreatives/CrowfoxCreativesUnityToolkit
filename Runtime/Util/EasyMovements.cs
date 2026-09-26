@@ -1,4 +1,3 @@
-using Sortify;
 using UnityEngine;
 
 namespace Crowfox.Util
@@ -16,14 +15,14 @@ namespace Crowfox.Util
 
         [SerializeField] bool doUseUnscaledTime = false;
 
-        [BetterHeader("Rotation")]
+        [Header("Rotation")]
         [SerializeField] private bool rotationIsActive = false;
         [SerializeField] private float degreePerSecond = 10f;
         [SerializeField] private Axis rotationAxis = Axis.Y;
         [SerializeField] private bool clockwise = true;
         [Space]
 
-        [BetterHeader("Directional Movement")]
+        [Header("Directional Movement")]
         [SerializeField] private bool directionalMovementIsActive = false;
         [SerializeField] private bool movementIsLocal = true;
         [SerializeField] private bool doTeleportInsteadOfLoop = false;
@@ -32,19 +31,19 @@ namespace Crowfox.Util
         [SerializeField] private bool doLerpLoop = false;
         [SerializeField] private float directionalLoopRadius = 1f;
         [SerializeField] private bool doChooseRandomRadius = false;
-        [SerializeField, MinMaxSlider(0f, 1000f)] private Vector2 directionalLoopRadiusMinMax = new(0f, 2f);
+        [SerializeField] private Vector2 directionalLoopRadiusMinMax = new(0f, 2f);
         [SerializeField] private float directionalLoopDuration = 1.5f;
         [SerializeField] private Axis directionalLoopAxis = Axis.Y;
         [SerializeField] private bool directionalLoopStartsPositive = true;
         [Space]
 
-        [BetterHeader("Material Loop")]
+        [Header("Material Loop")]
         [SerializeField] private bool materialLoopIsActive = false;
         [SerializeField] private bool doLerpMaterialAlpha = false;
         [SerializeField] private float materialLoopDuration = 1.5f;
         [Space]
 
-        [BetterHeader("Light Fade")]
+        [Header("Light Fade")]
         [SerializeField] private bool lightFadeIsActive = false;
         [SerializeField] private bool doLerpLightValues = true;
         [SerializeField] private float lightFadeDuration = 1.5f;

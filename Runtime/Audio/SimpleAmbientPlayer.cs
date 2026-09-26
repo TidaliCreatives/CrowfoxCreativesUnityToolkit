@@ -6,7 +6,7 @@ namespace Crowfox.Audio
     [RequireComponent(typeof(AudioSource))]
     public class SimpleAmbientPlayer : MonoBehaviour
     {
-        public static AmbientPlayer Instance { get; private set; }
+        public static SimpleAmbientPlayer Instance { get; private set; }
 
 
         AudioSource _audioSource;

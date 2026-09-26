@@ -1,5 +1,5 @@
 {
-  "name": "com.crowfox.toolkit",
+  "name": "com.crowfoxcreatives.toolkit",
   "version": "1.0.0",
   "displayName": "Crowfox Toolkit",
   "description": "Reusable Unity utilities and components by CrowfoxCreatives.",
@@ -8,4 +8,3 @@
     "name": "CrowfoxCreatives"
   }
 }
-    

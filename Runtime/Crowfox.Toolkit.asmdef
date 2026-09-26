@@ -1,4 +1,9 @@
 {
     "name": "Crowfox.Toolkit",
-    "rootNamespace": "Crowfox"
+    "rootNamespace": "Crowfox",
+    "references": [
+        "Unity.TextMeshPro",
+        "Unity.InputSystem",
+        "Unity.ugui"
+    ]
 }

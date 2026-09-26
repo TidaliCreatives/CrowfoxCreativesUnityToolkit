@@ -399,6 +399,250 @@ namespace Crowfox.Util
         }
 
         // =========================
+        // SpriteRenderer
+        // =========================
+
+        /// <summary>
+        /// Fade any SpriteRenderer to a target alpha over a duration.
+        /// Preserves the current RGB color values.
+        /// If doDestroyOnEnd is true, the GameObject will be destroyed
+        /// when the fade finishes at alpha 0.
+        /// </summary>
+        public static Coroutine FadeSpriteRenderer(
+            this SpriteRenderer spriteRenderer,
+            float targetAlpha,
+            float duration,
+            bool doUseUnscaledTime = true,
+            bool doDestroyOnEnd = false)
+        {
+            if (spriteRenderer == null)
+            {
+                Debug.LogError("SpriteRenderer is null. Cannot perform fade operation.");
+                return null;
+            }
+
+            var tracker = GetOrAddTracker(spriteRenderer.gameObject);
+
+            StopRunningFadeIfAny(tracker);
+
+            return tracker.Coroutine_CurrentlyRunningFade = tracker.StartCoroutine(
+                FadeSpriteRendererRoutine(
+                    spriteRenderer,
+                    targetAlpha,
+                    duration,
+                    tracker,
+                    doUseUnscaledTime,
+                    doDestroyOnEnd));
+        }
+
+        /// <summary>
+        /// Coroutine version of FadeSpriteRenderer.
+        /// Can be yield returned to wait for the fade to complete.
+        /// </summary>
+        public static IEnumerator FadeSpriteRendererCoroutine(
+            this SpriteRenderer spriteRenderer,
+            float targetAlpha,
+            float duration,
+            bool doUseUnscaledTime = true,
+            bool doDestroyOnEnd = false)
+        {
+            if (spriteRenderer == null)
+            {
+                Debug.LogError("SpriteRenderer is null. Cannot perform fade operation.");
+                yield break;
+            }
+
+            var tracker = GetOrAddTracker(spriteRenderer.gameObject);
+
+            StopRunningFadeIfAny(tracker);
+
+            tracker.Coroutine_CurrentlyRunningFade = tracker.StartCoroutine(
+                FadeSpriteRendererRoutine(
+                    spriteRenderer,
+                    targetAlpha,
+                    duration,
+                    tracker,
+                    doUseUnscaledTime,
+                    doDestroyOnEnd));
+
+            yield return tracker.Coroutine_CurrentlyRunningFade;
+        }
+
+        private static IEnumerator FadeSpriteRendererRoutine(
+            SpriteRenderer spriteRenderer,
+            float targetAlpha,
+            float duration,
+            Tracker tracker,
+            bool doUseUnscaledTime = true,
+            bool doDestroyOnEnd = false)
+        {
+            targetAlpha = Mathf.Clamp01(targetAlpha);
+
+            // Immediate fade
+            if (duration <= 0f)
+            {
+                var color = spriteRenderer.color;
+                color.a = targetAlpha;
+                spriteRenderer.color = color;
+
+                if (doDestroyOnEnd && Mathf.Approximately(targetAlpha, 0f))
+                    MonoBehaviour.Destroy(spriteRenderer.gameObject);
+
+                tracker.Coroutine_CurrentlyRunningFade = null;
+                yield break;
+            }
+
+            while (!Mathf.Approximately(spriteRenderer.color.a, targetAlpha))
+            {
+                var deltaTime = doUseUnscaledTime
+                    ? Time.unscaledDeltaTime
+                    : Time.deltaTime;
+
+                var color = spriteRenderer.color;
+
+                color.a = Mathf.MoveTowards(
+                    color.a,
+                    targetAlpha,
+                    deltaTime / duration);
+
+                spriteRenderer.color = color;
+
+                yield return null;
+            }
+
+            // Ensure exact final alpha
+            var finalColor = spriteRenderer.color;
+            finalColor.a = targetAlpha;
+            spriteRenderer.color = finalColor;
+
+            if (doDestroyOnEnd && Mathf.Approximately(targetAlpha, 0f))
+                MonoBehaviour.Destroy(spriteRenderer.gameObject);
+
+            tracker.Coroutine_CurrentlyRunningFade = null;
+        }
+
+        // =========================
+        // Image
+        // =========================
+
+        /// <summary>
+        /// Fade any UI Image to a target alpha over a duration.
+        /// Preserves the current RGB color values.
+        /// If doDestroyOnEnd is true, the GameObject will be destroyed
+        /// when the fade finishes at alpha 0.
+        /// </summary>
+        public static Coroutine FadeImage(
+            this Image image,
+            float targetAlpha,
+            float duration,
+            bool doUseUnscaledTime = true,
+            bool doDestroyOnEnd = false)
+        {
+            if (image == null)
+            {
+                Debug.LogError("Image is null. Cannot perform fade operation.");
+                return null;
+            }
+
+            var tracker = GetOrAddTracker(image.gameObject);
+
+            StopRunningFadeIfAny(tracker);
+
+            return tracker.Coroutine_CurrentlyRunningFade = tracker.StartCoroutine(
+                FadeImageRoutine(
+                    image,
+                    targetAlpha,
+                    duration,
+                    tracker,
+                    doUseUnscaledTime,
+                    doDestroyOnEnd));
+        }
+
+        /// <summary>
+        /// Coroutine version of FadeImage.
+        /// Can be yield returned to wait for the fade to complete.
+        /// </summary>
+        public static IEnumerator FadeImageCoroutine(
+            this Image image,
+            float targetAlpha,
+            float duration,
+            bool doUseUnscaledTime = true,
+            bool doDestroyOnEnd = false)
+        {
+            if (image == null)
+            {
+                Debug.LogError("Image is null. Cannot perform fade operation.");
+                yield break;
+            }
+
+            var tracker = GetOrAddTracker(image.gameObject);
+
+            StopRunningFadeIfAny(tracker);
+
+            tracker.Coroutine_CurrentlyRunningFade = tracker.StartCoroutine(
+                FadeImageRoutine(
+                    image,
+                    targetAlpha,
+                    duration,
+                    tracker,
+                    doUseUnscaledTime,
+                    doDestroyOnEnd));
+
+            yield return tracker.Coroutine_CurrentlyRunningFade;
+        }
+
+        private static IEnumerator FadeImageRoutine(
+            Image image,
+            float targetAlpha,
+            float duration,
+            Tracker tracker,
+            bool doUseUnscaledTime = true,
+            bool doDestroyOnEnd = false)
+        {
+            targetAlpha = Mathf.Clamp01(targetAlpha);
+
+            if (duration <= 0f)
+            {
+                var color = image.color;
+                color.a = targetAlpha;
+                image.color = color;
+
+                if (doDestroyOnEnd && Mathf.Approximately(targetAlpha, 0f))
+                    MonoBehaviour.Destroy(image.gameObject);
+
+                tracker.Coroutine_CurrentlyRunningFade = null;
+                yield break;
+            }
+
+            while (!Mathf.Approximately(image.color.a, targetAlpha))
+            {
+                var deltaTime = doUseUnscaledTime
+                    ? Time.unscaledDeltaTime
+                    : Time.deltaTime;
+
+                var color = image.color;
+
+                color.a = Mathf.MoveTowards(
+                    color.a,
+                    targetAlpha,
+                    deltaTime / duration);
+
+                image.color = color;
+
+                yield return null;
+            }
+
+            var finalColor = image.color;
+            finalColor.a = targetAlpha;
+            image.color = finalColor;
+
+            if (doDestroyOnEnd && Mathf.Approximately(targetAlpha, 0f))
+                MonoBehaviour.Destroy(image.gameObject);
+
+            tracker.Coroutine_CurrentlyRunningFade = null;
+        }
+
+        // =========================
         // AudioSource
         // =========================
 

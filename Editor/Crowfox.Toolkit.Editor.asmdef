@@ -1,0 +1,10 @@
+{
+    "name": "Crowfox.Toolkit.Editor",
+    "rootNamespace": "Crowfox.Editor",
+    "references": [
+        "Crowfox.Toolkit"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ]
+}
